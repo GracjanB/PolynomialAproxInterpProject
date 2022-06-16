@@ -7,10 +7,7 @@ namespace PolynomialAproxInterpProject
     {
         public static double[] CalculatePolynomialPoints(FunctionPoints points)
         {
-            double[] x = points.ArrayX;
-            double[] y = points.ArrayY;
-            int numberOfPoints = x.Length;
-
+            int numberOfPoints = points.ArrayX.Length;
             double[,] inputMatrix = new double[numberOfPoints, numberOfPoints];
 
             for (int i = 0; i < numberOfPoints; i++)
@@ -19,15 +16,15 @@ namespace PolynomialAproxInterpProject
 
                 for (int j = 0; j < numberOfPoints; j++)
                 {
-                    inputMatrix[i, j] = Math.Pow(x[i], polynomialDegree);
+                    inputMatrix[i, j] = Math.Pow(points.ArrayX[i], polynomialDegree);
                     polynomialDegree--;
                 }
             }
 
-            var A = Matrix<double>.Build.DenseOfArray(inputMatrix);
-            var b = Vector<double>.Build.Dense(y);
+            var Amatrix = Matrix<double>.Build.DenseOfArray(inputMatrix);
+            var BMatrix = Vector<double>.Build.Dense(points.ArrayY);
 
-            var result = A.Solve(b).ToArray();
+            var result = Amatrix.Solve(BMatrix).ToArray();
 
             return result;
         }
